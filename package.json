@@ -1,12 +1,12 @@
 {
-  "name": "express-api-boilerplate",
+  "name": "rest-api-boilerplate",
   "version": "1.0.0",
-  "description": "RESTful API Boilerplate (express)",
+  "description": "Minimalist RESTful API Boilerplate and build process to quickly get projects going.",
   "author": "Mathias Brouilly",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bymathias/express-api-boilerplate"
+    "url": "https://github.com/bymathias/rest-api-boilerplate"
   },
   "directories": {
     "test": "test"
@@ -16,7 +16,6 @@
     "dev:api:start": "nodemon -r dotenv/config dist",
     "dev": "run-p dev:**",
     "build": "webpack -r @babel/register --progress",
-    "build:prod": "webpack -r @babel/register --mode=production --progress",
     "test": "jest --detectOpenHandles --forceExit",
     "start": "node -r dotenv/config dist"
   },

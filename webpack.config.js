@@ -3,37 +3,26 @@
 import { resolve } from 'path'
 
 import webpack from 'webpack'
-import TerserWebpackPlugin from 'terser-webpack-plugin'
 import webpackNodeExternals from 'webpack-node-externals'
+import TerserWebpackPlugin from 'terser-webpack-plugin'
 import { CleanWebpackPlugin } from 'clean-webpack-plugin'
+
+import pkg from './package'
 
 // Helpers
 const resolvePath = (...args) => resolve(__dirname, ...args)
 
 // Webpack config: Exporting a Function
 const webpackConfig = (env = {}, argv) => {
-  // Set environment object
-  env = { ...env, ...process.env }
   // Set `development` as Webpack default mode
   argv.mode = argv.mode || 'development'
   // Set `production` mode using `--mode=production`
-  env.PRODUCTION = argv.mode === 'production'
+  const PRODUCTION = argv.mode === 'production'
   // Enable debug mode using `--debug`
-  env.DEBUG = argv.debug || false
-
-  // Dynamic banner template
-  const banner = [
-    new Date().toISOString().substr(0, 10),
-    env.npm_package_name,
-    `@version ${env.npm_package_version}`,
-    `@license ${env.npm_package_license}`,
-    `@author  ${env.npm_package_author_name}`,
-    'Copyright (c) 2020'
-  ].join('\n')
+  const DEBUG = argv.debug || false
 
   return ({
     target: 'node',
-    name: 'api',
 
     context: resolvePath('src'),
     entry: {
@@ -48,7 +37,7 @@ const webpackConfig = (env = {}, argv) => {
     },
 
     // Style of source mapping to enhance the debugging process
-    devtool: '#source-map',
+    devtool: PRODUCTION ? false : 'source-map',
 
     node: {
       // If you don't put this is, __dirname
@@ -81,8 +70,8 @@ const webpackConfig = (env = {}, argv) => {
           options: {
             // eslintPath: '', // `.eslintrc` is used by default
             emitError: true,
-            emitWarning: !env.PRODUCTION,
-            failOnError: env.PRODUCTION
+            emitWarning: !PRODUCTION,
+            failOnError: PRODUCTION
           }
         },
         {
@@ -97,28 +86,30 @@ const webpackConfig = (env = {}, argv) => {
     plugins: [
       // Remove output folder(s) before building
       new CleanWebpackPlugin({
-        verbose: env.DEBUG
+        verbose: DEBUG
       }),
 
       // Add dynamic banner to output bundle(s)
-      env.PRODUCTION
-        ? new webpack.BannerPlugin(banner)
+      PRODUCTION
+        ? new webpack.BannerPlugin([
+          new Date().toISOString().substr(0, 10),
+          `@version ${pkg.version}`,
+          `@author ${pkg.author}`
+        ].join('\n'))
         : 0
 
     ].filter(Boolean),
 
     // Optimizations depending on the chosen mode
     optimization: {
-      minimize: env.PRODUCTION,
+      minimize: PRODUCTION,
       minimizer: [
         // JavaScript parser, mangler and compressor toolkit for ES6+
         new TerserWebpackPlugin({
-          sourceMap: true,
           cache: true,
           parallel: true,
           extractComments: false,
           terserOptions: {
-            sourceMap: true,
             warnings: true,
             compress: true,
             mangle: true,
