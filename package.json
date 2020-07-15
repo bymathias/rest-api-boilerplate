@@ -12,9 +12,9 @@
     "test": "test"
   },
   "scripts": {
-    "dev:api": "webpack -r @babel/register --watch --progress",
-    "dev:api:start": "nodemon -r dotenv/config dist",
-    "dev": "run-p dev:**",
+    "dev:watch": "webpack -r @babel/register --watch --progress",
+    "dev:start": "nodemon -r dotenv/config dist",
+    "dev": "run-p dev:*",
     "build": "webpack -r @babel/register --progress",
     "test": "jest --detectOpenHandles --forceExit",
     "start": "node -r dotenv/config dist"
