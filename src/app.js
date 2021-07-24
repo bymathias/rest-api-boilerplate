@@ -3,7 +3,9 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 import helmet from 'helmet'
-import cors from 'cors'
+// import xss from 'xss-clean'
+// import cors from 'cors'
+import morgan from 'morgan'
 
 // Routes
 import routeIndex from '@/routes'
@@ -16,10 +18,23 @@ app.disable('etag')
 app.use(bodyParser.json())
 // application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
+
 // Secure apps by setting various HTTP headers
 app.use(helmet())
+// Sanitize user input coming from POST body, GET queries, and url params
+// app.use(xss())
+
 // Enable CORS - Cross Origin Resource Sharing
-app.use(cors())
+// app.use(cors({
+//   origin: process.env.APP_CLIENT_URL
+// }))
+
+// Development logging middleware
+// Log all requests to the console in dev env
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'))
+}
+
 // Routes middlewares
 app.use('/', routeIndex)
 

@@ -1,4 +1,5 @@
 module.exports = {
+  setupFiles: ['dotenv/config'],
   rootDir: './',
   testEnvironment: 'node',
   moduleFileExtensions: ['js', 'jsx', 'json'],
@@ -8,9 +9,6 @@ module.exports = {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1'
   },
-  testMatch: [
-    '**/test/unit/**/*.spec.(js|jsx|ts|tsx)'
-  ],
   coveragePathIgnorePatterns: [
     '/node_modules/'
   ]

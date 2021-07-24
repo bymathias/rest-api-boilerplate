@@ -2,9 +2,9 @@
 
 import app from '@/app'
 
-const { APP_API_PORT = 4001 } = process.env
+const { APP_PORT = 4001 } = process.env
 
 // Binds and listens for connections
-const server = app.listen(APP_API_PORT, () => console.log(`Listening on port ${APP_API_PORT}`))
+const server = app.listen(APP_PORT, () => console.log(`Listening on port ${APP_PORT}`))
 
 export default server

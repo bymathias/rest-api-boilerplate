@@ -5,6 +5,7 @@ import { resolve } from 'path'
 import webpack from 'webpack'
 import webpackNodeExternals from 'webpack-node-externals'
 import TerserWebpackPlugin from 'terser-webpack-plugin'
+import EslintWebpackPlugin from 'eslint-webpack-plugin'
 import { CleanWebpackPlugin } from 'clean-webpack-plugin'
 
 import pkg from './package'
@@ -13,16 +14,14 @@ import pkg from './package'
 const resolvePath = (...args) => resolve(__dirname, ...args)
 
 // Webpack config: Exporting a Function
-const webpackConfig = (env = {}, argv) => {
+const webpackConfig = (env, argv) => {
+  env = { ...env, ...process.env }
   // Set `development` as Webpack default mode
-  argv.mode = argv.mode || 'development'
-  // Set `production` mode using `--mode=production`
-  const PRODUCTION = argv.mode === 'production'
-  // Enable debug mode using `--debug`
-  const DEBUG = argv.debug || false
+  env.APP_BUILD_MODE = argv.mode || env.APP_BUILD_MODE || 'development'
 
   return ({
     target: 'node',
+    mode: env.APP_BUILD_MODE,
 
     context: resolvePath('src'),
     entry: {
@@ -33,13 +32,15 @@ const webpackConfig = (env = {}, argv) => {
       // This tells the server bundle to use Node-style exports
       libraryTarget: 'commonjs2',
       path: resolvePath('dist'),
-      filename: '[name].js'
+      filename: '[name].js',
+      clean: true
     },
 
     // Style of source mapping to enhance the debugging process
-    devtool: PRODUCTION ? false : 'source-map',
+    devtool: env.APP_BUILD_MODE === 'production' ? false : 'source-map',
 
     node: {
+      global: false,
       // If you don't put this is, __dirname
       // and __filename return blank or /
       __dirname: false,
@@ -63,18 +64,6 @@ const webpackConfig = (env = {}, argv) => {
     module: {
       rules: [
         {
-          enforce: 'pre',
-          test: /\.js$/,
-          exclude: /node_modules/,
-          loader: 'eslint-loader',
-          options: {
-            // eslintPath: '', // `.eslintrc` is used by default
-            emitError: true,
-            emitWarning: !PRODUCTION,
-            failOnError: PRODUCTION
-          }
-        },
-        {
           test: /\.js$/,
           exclude: /node_modules/,
           loader: 'babel-loader'
@@ -85,12 +74,13 @@ const webpackConfig = (env = {}, argv) => {
     // Add plugins to the compiler
     plugins: [
       // Remove output folder(s) before building
-      new CleanWebpackPlugin({
-        verbose: DEBUG
-      }),
+      new CleanWebpackPlugin(),
+
+      // Use eslint to find and fix problems in your JavaScript code
+      new EslintWebpackPlugin(),
 
       // Add dynamic banner to output bundle(s)
-      PRODUCTION
+      env.APP_BUILD_MODE === 'production'
         ? new webpack.BannerPlugin([
           new Date().toISOString().substr(0, 10),
           `@version ${pkg.version}`,
@@ -102,14 +92,14 @@ const webpackConfig = (env = {}, argv) => {
 
     // Optimizations depending on the chosen mode
     optimization: {
-      minimize: PRODUCTION,
+      minimize: env.APP_BUILD_MODE === 'production',
       minimizer: [
         // JavaScript parser, mangler and compressor toolkit for ES6+
         new TerserWebpackPlugin({
-          cache: true,
           parallel: true,
           extractComments: false,
           terserOptions: {
+            sourceMap: true,
             warnings: true,
             compress: true,
             mangle: true,

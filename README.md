@@ -1,23 +1,21 @@
 # [RESTful API Boilerplate](https://github.com/bymathias/rest-api-boilerplate)
 
 [![Github Release][github-release-img]][github-release-url]
-[![dependencies][david-dm-dependencies-img]][david-dm-dependencies-url]
-[![devDependencies][david-dm-devDependencies-img]][david-dm-devDependencies-url]
 
-> Minimalist RESTful API Boilerplate and build process to quickly get projects going.
+> RESTful API Boilerplate and build process to quickly get projects going.
 
 ## Features
 
 **Development tools:**
 
-- [Webpack 4]() as module bundler
+- [Webpack 5](https://webpack.js.org/) as module bundler
 - ES6 support via [Babel](https://babeljs.io/)
 - Lint via [ESLint](https://eslint.org/) - [JavaScript Standard Style](https://standardjs.com/)
 - Unit tests via [Jest](https://jestjs.io/) - [SuperTest](https://www.npmjs.com/package/supertest)
 
 **Frameworks/Libraries included:**
 
-- [Express]() framework
+- [Express](https://expressjs.com/) framework
 - CORS support via [cors](https://github.com/troygoode/node-cors)
 - Body Parsing via [body-parser](https://github.com/expressjs/body-parser)
 - Secure your app via [helmet](https://github.com/helmetjs/helmet)
@@ -46,20 +44,27 @@ Watch/run the Express server for development
 ```
 npm run dev
 ```
+
 Run unit tests (Jest)
 ```
+npm run test:watch
+# OR
 npm test
 ```
+
 **Production:**
 
-Build for production
+Build for production,
 ```
 npm run build -- --mode=production
 ```
+or edit the variable `APP_BUILD_MODE` in the `.env` file.
+
 Run the Express server
 ```
 npm start
 ```
+
 ## Change Log
 
 All notable changes to this project will be documented in the [CHANGELOG](CHANGELOG.md).
@@ -77,11 +82,6 @@ The code is available under the MIT [LICENSE](LICENSE.txt).
 
 [github-release-url]: https://github.com/bymathias/rest-api-boilerplate/releases/latest
 [github-release-img]: https://img.shields.io/github/release/bymathias/rest-api-boilerplate.svg?style=flat-square
-
-[david-dm-dependencies-url]:    https://david-dm.org/bymathias/rest-api-boilerplate
-[david-dm-dependencies-img]:    https://img.shields.io/david/bymathias/rest-api-boilerplate.svg?style=flat-square
-[david-dm-devDependencies-url]: https://david-dm.org/bymathias/rest-api-boilerplate?type=dev
-[david-dm-devDependencies-img]: https://img.shields.io/david/dev/bymathias/rest-api-boilerplate.svg?style=flat-square
 
 [how-to-contribute-url]:      https://egghead.io/courses/how-to-contribute-to-an-open-source-project-on-github
 [project-new-issue-url]:      https://github.com/bymathias/rest-api-boilerplate/issues/new

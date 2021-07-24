@@ -1,7 +1,7 @@
 {
   "name": "rest-api-boilerplate",
   "version": "1.0.0",
-  "description": "Minimalist RESTful API Boilerplate and build process to quickly get projects going.",
+  "description": "RESTful API Boilerplate and build process to quickly get projects going.",
   "author": "Mathias Brouilly",
   "license": "MIT",
   "repository": {
@@ -12,42 +12,45 @@
     "test": "test"
   },
   "scripts": {
-    "dev:watch": "webpack -r @babel/register --watch --progress",
+    "dev:watch": "webpack --watch --progress",
     "dev:start": "nodemon -r dotenv/config dist",
     "dev": "run-p dev:*",
-    "build": "webpack -r @babel/register --progress",
-    "test": "jest --detectOpenHandles --forceExit",
+    "build": "webpack --progress",
+    "test:watch": "jest --watchAll",
+    "test": "jest",
     "start": "node -r dotenv/config dist"
   },
   "devDependencies": {
-    "@babel/core": "^7.10.3",
-    "@babel/preset-env": "^7.10.4",
-    "@babel/register": "^7.10.3",
+    "@babel/core": "^7.14.8",
+    "@babel/preset-env": "^7.14.8",
+    "@babel/register": "^7.14.5",
     "babel-eslint": "^10.1.0",
-    "babel-jest": "^26.1.0",
-    "babel-loader": "^8.1.0",
+    "babel-jest": "^27.0.6",
+    "babel-loader": "^8.2.2",
     "clean-webpack-plugin": "^3.0.0",
-    "eslint": "^7.3.1",
-    "eslint-config-standard": "^14.1.1",
-    "eslint-loader": "^4.0.2",
-    "eslint-plugin-import": "^2.21.2",
+    "eslint": "^7.31.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-standard": "^4.0.1",
-    "jest": "^26.1.0",
-    "nodemon": "^2.0.4",
+    "eslint-plugin-promise": "^5.1.0",
+    "eslint-plugin-standard": "^4.1.0",
+    "eslint-webpack-plugin": "^3.0.1",
+    "jest": "^27.0.6",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.12",
     "npm-run-all": "^4.1.5",
-    "supertest": "^4.0.2",
-    "terser-webpack-plugin": "^3.0.6",
-    "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.12",
-    "webpack-node-externals": "^1.7.2"
+    "supertest": "^6.1.4",
+    "terser-webpack-plugin": "^5.1.4",
+    "webpack": "^5.46.0",
+    "webpack-cli": "^4.7.2",
+    "webpack-node-externals": "^3.0.0"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
-    "dotenv": "^8.2.0",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
-    "helmet": "^3.23.3"
+    "helmet": "^4.6.0",
+    "xss-clean": "^0.1.1"
   }
 }
