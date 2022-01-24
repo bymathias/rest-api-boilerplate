@@ -1,4 +1,4 @@
-/*! api/index.js | Main API file */
+/*! app.js | Main API file */
 
 import express from 'express'
 import bodyParser from 'body-parser'
@@ -6,9 +6,14 @@ import helmet from 'helmet'
 // import xss from 'xss-clean'
 // import cors from 'cors'
 import morgan from 'morgan'
+import mongoose from 'mongoose'
+
+// Init MongoDB
+import initDB from '@/config/db'
 
 // Routes
 import routeIndex from '@/routes'
+import routeServices from '@/routes/v1/services'
 
 const app = express()
 app.disable('etag')
@@ -35,7 +40,11 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'))
 }
 
+// Setup database
+initDB(mongoose)
+
 // Routes middlewares
 app.use('/', routeIndex)
+app.use('/v1/services', routeServices)
 
 export default app
